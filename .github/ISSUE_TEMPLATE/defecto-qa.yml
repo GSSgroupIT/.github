@@ -1,0 +1,90 @@
+name: Defecto encontrado en QA
+description: Reporta un defecto encontrado durante las pruebas de QA y clasifica su origen.
+labels: ["bug", "qa"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **¿Qué origen elegir?** Compara contra el requerimiento tal como estaba cuando se entregó a QA.
+
+        - **Desarrollo**: contradice un criterio de aceptación que ya existía al entregar a QA.
+        - **Cambio de alcance**: el criterio se agregó o se modificó después de iniciado el desarrollo, o se decidió cambiarlo y el requerimiento no se actualizó.
+        - **Requerimiento ambiguo**: el requerimiento no cubría el caso o admitía dos lecturas.
+        - **Entorno/datos**: el problema está en la configuración, los datos o el despliegue, no en el código.
+        - **No es defecto**: el sistema se comporta como lo pide el requerimiento vigente.
+
+  - type: dropdown
+    id: origen
+    attributes:
+      label: Origen del defecto
+      description: Si cambia después de reportarlo, edita este campo en el cuerpo del issue; la etiqueta `origen:*` se actualiza sola.
+      options:
+        - Desarrollo
+        - Cambio de alcance
+        - Requerimiento ambiguo
+        - Entorno/datos
+        - No es defecto
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del error
+      description: Qué falla y en qué pantalla, módulo o endpoint.
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducir
+      placeholder: |
+        1. Ingresar a ...
+        2. Hacer clic en ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado-obtenido
+    attributes:
+      label: Resultado esperado vs. obtenido
+      placeholder: |
+        Esperado: ...
+        Obtenido: ...
+    validations:
+      required: true
+
+  - type: input
+    id: criterio
+    attributes:
+      label: Criterio de aceptación o escenario incumplido
+      placeholder: "CA-3 / Escenario: ..."
+    validations:
+      required: false
+
+  - type: input
+    id: pr
+    attributes:
+      label: PR donde se introdujo
+      description: PR de este mismo repositorio, en formato #123. El reporte mensual le atribuye el defecto a su autor.
+      placeholder: "#123"
+    validations:
+      required: false
+
+  - type: input
+    id: requerimiento
+    attributes:
+      label: Requerimiento / historia relacionada
+      placeholder: Enlace o identificador de la historia
+    validations:
+      required: false
+
+  - type: input
+    id: dueno-requerimiento
+    attributes:
+      label: Dueño del requerimiento
+      description: Nombre del dueño del requerimiento en FLOW. Obligatorio si el origen es Cambio de alcance o Requerimiento ambiguo; el reporte mensual le atribuye esos defectos.
+    validations:
+      required: false
